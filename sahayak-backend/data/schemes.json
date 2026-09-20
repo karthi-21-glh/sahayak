@@ -1,0 +1,171 @@
+[
+  {
+    "id": "pm_kisan",
+    "name": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)",
+    "category": "Agriculture",
+    "state": "All India",
+    "description": "Income support scheme for eligible landholding farmer families.",
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "gender": null,
+      "marital_status": null,
+      "income_max_monthly": null,
+      "location": "India",
+      "children_count_min": null,
+      "children_are_students": null,
+      "is_student": false,
+      "has_disability": null,
+      "landholding_farmer": true
+    },
+    "benefit": "₹6,000 per year in three equal installments, subject to scheme eligibility and exclusions.",
+    "documents": [
+      "Aadhaar",
+      "Bank account details",
+      "Landholding/farmer records as required by the State/UT"
+    ],
+    "application_method": "Online through the official PM-KISAN portal and through designated State/UT processes.",
+    "application_url": "https://pmkisan.gov.in/",
+    "source": {
+      "name": "PM-KISAN, Government of India",
+      "url": "https://pmkisan.gov.in/"
+    }
+  },
+  {
+    "id": "pmuy",
+    "name": "Pradhan Mantri Ujjwala Yojana (PMUY)",
+    "category": "Energy",
+    "state": "All India",
+    "description": "Provides deposit-free LPG connections to eligible adult women from poor households.",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": null,
+      "gender": "female",
+      "marital_status": null,
+      "income_max_monthly": null,
+      "location": "India",
+      "children_count_min": null,
+      "children_are_students": null,
+      "is_student": false,
+      "has_disability": null,
+      "poor_household": true,
+      "existing_lpg_connection_in_household": false
+    },
+    "benefit": "Deposit-free LPG connection, with the scheme providing applicable connection assistance and a free first refill and stove as specified by PMUY.",
+    "documents": [
+      "KYC application form",
+      "Aadhaar of applicant",
+      "Aadhaar of adult family members",
+      "Ration card or family composition document",
+      "Proof of address where required",
+      "Bank account details",
+      "Deprivation declaration"
+    ],
+    "application_method": "Apply through an LPG distributor or the official online PMUY process.",
+    "application_url": "https://www.pmuy.gov.in/",
+    "source": {
+      "name": "Pradhan Mantri Ujjwala Yojana, Government of India",
+      "url": "https://www.pmuy.gov.in/"
+    }
+  },
+  {
+    "id": "pmay_u_2",
+    "name": "Pradhan Mantri Awas Yojana - Urban 2.0 (PMAY-U 2.0)",
+    "category": "Housing",
+    "state": "All India",
+    "description": "Housing assistance for eligible families living in urban areas.",
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "gender": null,
+      "marital_status": null,
+      "income_max_monthly": 75000,
+      "location": "Urban India",
+      "children_count_min": null,
+      "children_are_students": null,
+      "is_student": false,
+      "has_disability": null,
+      "annual_income_max": 900000,
+      "has_pucca_house": false,
+      "received_housing_scheme_benefit_last_20_years": false
+    },
+    "benefit": "Housing assistance through one of the PMAY-U 2.0 verticals, subject to the applicable eligibility and verification.",
+    "documents": [
+      "Proof of income",
+      "Documents required by the applicable PMAY-U 2.0 vertical"
+    ],
+    "application_method": "Apply through the official PMAY-U 2.0 system and the relevant State/UT/ULB/implementing agency.",
+    "application_url": "https://pmaymis.gov.in/pmaymis2_2024/",
+    "source": {
+      "name": "PMAY-U 2.0, Ministry of Housing and Urban Affairs",
+      "url": "https://pmaymis.gov.in/pmaymis2_2024/"
+    }
+  },
+  {
+    "id": "pm_usp_csss",
+    "name": "PM-USP Central Sector Scheme of Scholarship for College and University Students",
+    "category": "Education",
+    "state": "All India",
+    "description": "Merit-based financial assistance for eligible students pursuing higher education.",
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "gender": null,
+      "marital_status": null,
+      "income_max_monthly": 37500,
+      "location": "India",
+      "children_count_min": null,
+      "children_are_students": null,
+      "is_student": true,
+      "has_disability": null,
+      "class_12_top_percentile": true,
+      "annual_income_max": 450000
+    },
+    "benefit": "Scholarship assistance of ₹12,000 per year for the first three years and ₹20,000 per year for the fourth and fifth years, according to the applicable course and scheme rules.",
+    "documents": [
+      "Documents required through the National Scholarship Portal and institution verification process"
+    ],
+    "application_method": "Apply through the National Scholarship Portal.",
+    "application_url": "https://scholarships.gov.in/",
+    "source": {
+      "name": "National Scholarship Portal / Ministry of Education",
+      "url": "https://scholarships.gov.in/"
+    }
+  },
+  {
+    "id": "post_matric_disability_scholarship",
+    "name": "Post Matric Scholarship for Students with Disabilities",
+    "category": "Education",
+    "state": "All India",
+    "description": "Scholarship support for students with benchmark disabilities pursuing post-matric education.",
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "gender": null,
+      "marital_status": null,
+      "income_max_monthly": 20833.33,
+      "location": "India",
+      "children_count_min": null,
+      "children_are_students": null,
+      "is_student": true,
+      "has_disability": true,
+      "disability_percentage_min": 40,
+      "annual_income_max": 250000
+    },
+    "benefit": "Scholarship support including maintenance allowance, disability allowance, reimbursement of eligible compulsory fees and book allowance, according to course and applicable rules.",
+    "documents": [
+      "UDID card",
+      "Aadhaar",
+      "Disability certificate",
+      "Income certificate",
+      "Academic qualification documents",
+      "Bank details"
+    ],
+    "application_method": "Apply through the National Scholarship Portal.",
+    "application_url": "https://scholarships.gov.in/",
+    "source": {
+      "name": "Department of Empowerment of Persons with Disabilities, Government of India",
+      "url": "https://depwd.gov.in/"
+    }
+  }
+]
