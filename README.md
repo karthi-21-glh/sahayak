@@ -1,5 +1,11 @@
 # Sahayak
 
+### AI-Powered Government Benefit Finder
+
+🌐 **[Live Demo](https://sahayak-vjgk.onrender.com)**
+
+**Built with:** React • Vite • Node.js • Express • Gemini API • Web Speech API • jsPDF
+
 **Sahayak** is a multilingual, voice-friendly government benefit
 discovery platform that helps people identify government schemes that
 may match their situation. Users describe their circumstances in natural
@@ -127,22 +133,21 @@ The frontend is designed for desktop and mobile-sized screens.
 
 ## 3. Tech Stack
 
-Technology Role
-
----
-
-React Frontend application and UI components
-Vite Frontend development/build tooling
-JavaScript Application logic
-Tailwind-style utility classes Responsive UI styling
-Node.js Backend runtime
-Express REST API server
-Gemini API Natural-language profile extraction
-JSON Scheme dataset and structured application data
-Web Speech API Browser voice input
-SpeechSynthesis API Browser read-aloud
-jsPDF Application summary PDF generation
-Git/GitHub Version control and collaboration
+| Technology                     | Role                                           |
+| ------------------------------ | ---------------------------------------------- |
+| React                          | Frontend application and UI components         |
+| Vite                           | Frontend development and build tooling         |
+| JavaScript                     | Application logic                              |
+| Tailwind-style utility classes | Responsive UI styling                          |
+| Node.js                        | Backend runtime                                |
+| Express                        | REST API server                                |
+| Gemini API                     | Natural-language profile extraction            |
+| JSON                           | Scheme dataset and structured application data |
+| Web Speech API                 | Browser-based voice input                      |
+| SpeechSynthesis API            | Browser-based read-aloud                       |
+| jsPDF                          | Application summary PDF generation             |
+| Git & GitHub                   | Version control and collaboration              |
+| Render                         | Frontend and backend deployment                |
 
 ### Why this stack?
 
@@ -237,7 +242,7 @@ sahayak/
 │   │   └── matcher.js
 │   ├── server.js
 │   ├── package.json
-│   └── .env                 # Local only; not committed
+│   └── .env.example
 │
 ├── .gitignore
 ├── index.html
@@ -247,40 +252,20 @@ sahayak/
 └── README.md
 ```
 
-### Important files
+### Important Files
 
----
-
-File Responsibility
-
----
-
-`src/App.jsx` Frontend page navigation and shared
-application state
-
-`src/pages/Assessment.jsx` User intake, questions, voice
-input, backend request
-
-`src/pages/Profile.jsx` Profile confirmation
-
-`src/pages/Results.jsx` Potential scheme matches and
-document overview
-
-`src/pages/SchemeDetails.jsx` Detailed scheme information and
-official source
-
-`src/pages/Documents.jsx` Document checklist and PDF
-generation
-
-`sahayak-backend/server.js` Express server and API endpoints
-
-`sahayak-backend/utils/gemini.js` Gemini profile extraction
-
-`sahayak-backend/utils/matcher.js` Scheme matching logic
-
-`sahayak-backend/data/schemes.json` Scheme dataset
-
----
+| File                                | Responsibility                                            |
+| ----------------------------------- | --------------------------------------------------------- |
+| `src/App.jsx`                       | Frontend page navigation and shared application state     |
+| `src/pages/Assessment.jsx`          | User intake, questions, voice input, and backend requests |
+| `src/pages/Profile.jsx`             | Profile confirmation                                      |
+| `src/pages/Results.jsx`             | Potential scheme matches and document overview            |
+| `src/pages/SchemeDetails.jsx`       | Detailed scheme information and official source           |
+| `src/pages/Documents.jsx`           | Document checklist and PDF generation                     |
+| `sahayak-backend/server.js`         | Express server and API endpoints                          |
+| `sahayak-backend/utils/gemini.js`   | Gemini profile extraction                                 |
+| `sahayak-backend/utils/matcher.js`  | Scheme matching logic                                     |
+| `sahayak-backend/data/schemes.json` | Curated scheme dataset                                    |
 
 ---
 
@@ -454,32 +439,6 @@ The application includes the following major screens:
 - Scheme details
 - Document checklist
 - Generated application summary
-
-### Recommended screenshots for the repository
-
-Add screenshots under:
-
-```text
-docs/screenshots/
-```
-
-For example:
-
-```text
-docs/screenshots/
-├── landing.png
-├── assessment.png
-├── profile.png
-├── results.png
-├── scheme-details.png
-└── documents.png
-```
-
-Then embed them in this README using:
-
-```markdown
-![Sahayak Results](docs/screenshots/results.png)
-```
 
 ### Demo
 
