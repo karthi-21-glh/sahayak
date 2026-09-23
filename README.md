@@ -12,7 +12,7 @@ guidance.
 > It does not make final eligibility decisions. Final eligibility and
 > benefit approval are determined by the relevant government authority.
 
-------------------------------------------------------------------------
+---
 
 ## 1. Project Overview
 
@@ -22,7 +22,7 @@ sources.
 
 Sahayak simplifies the discovery process into a guided flow:
 
-``` text
+```text
 Describe your situation
         ↓
 Profile extraction
@@ -41,7 +41,7 @@ Application summary PDF
 The application supports English and Hindi UI text and includes
 browser-based voice input and read-aloud functionality.
 
-------------------------------------------------------------------------
+---
 
 ## 2. Features
 
@@ -55,17 +55,17 @@ filling out a long form.
 The backend uses the Gemini API to extract structured information such
 as:
 
--   Age
--   Gender
--   Marital status
--   Location
--   Monthly income
--   Number of children
--   Whether children are studying
--   Student status
--   Disability information
--   Farmer/landholding information
--   Household information
+- Age
+- Gender
+- Marital status
+- Location
+- Monthly income
+- Number of children
+- Whether children are studying
+- Student status
+- Disability information
+- Farmer/landholding information
+- Household information
 
 Only information explicitly provided by the user is intended to be
 extracted.
@@ -81,22 +81,22 @@ continue without returning a hard-coded demo profile.
 The backend matches the extracted profile against the project's scheme
 dataset and returns potential matches with:
 
--   Scheme name
--   Match level
--   Match score
--   Reason for the potential match
--   Matched conditions
--   Missing information
--   Document requirements
--   Benefit information
--   Official source URL
+- Scheme name
+- Match level
+- Match score
+- Reason for the potential match
+- Matched conditions
+- Missing information
+- Document requirements
+- Benefit information
+- Official source URL
 
 ### Multilingual interface
 
 The interface currently supports:
 
--   English
--   Hindi
+- English
+- Hindi
 
 ### Voice input
 
@@ -123,24 +123,26 @@ matched scheme information, conditions, and document information.
 
 The frontend is designed for desktop and mobile-sized screens.
 
-------------------------------------------------------------------------
+---
 
 ## 3. Tech Stack
 
-  Technology                       Role
-  -------------------------------- ------------------------------------------------
-  React                            Frontend application and UI components
-  Vite                             Frontend development/build tooling
-  JavaScript                       Application logic
-  Tailwind-style utility classes   Responsive UI styling
-  Node.js                          Backend runtime
-  Express                          REST API server
-  Gemini API                       Natural-language profile extraction
-  JSON                             Scheme dataset and structured application data
-  Web Speech API                   Browser voice input
-  SpeechSynthesis API              Browser read-aloud
-  jsPDF                            Application summary PDF generation
-  Git/GitHub                       Version control and collaboration
+Technology Role
+
+---
+
+React Frontend application and UI components
+Vite Frontend development/build tooling
+JavaScript Application logic
+Tailwind-style utility classes Responsive UI styling
+Node.js Backend runtime
+Express REST API server
+Gemini API Natural-language profile extraction
+JSON Scheme dataset and structured application data
+Web Speech API Browser voice input
+SpeechSynthesis API Browser read-aloud
+jsPDF Application summary PDF generation
+Git/GitHub Version control and collaboration
 
 ### Why this stack?
 
@@ -152,11 +154,11 @@ The scheme data is stored as JSON rather than requiring a database for
 the current prototype, which keeps local setup lightweight and makes the
 matching layer easy to inspect and modify.
 
-------------------------------------------------------------------------
+---
 
 ## 4. Architecture
 
-``` mermaid
+```mermaid
 flowchart TD
     A[User] --> B[React / Vite Frontend]
 
@@ -201,11 +203,11 @@ extraction fails - Runs scheme matching - Returns structured results
 Provides scheme requirements, document information, benefits, and
 official URLs
 
-------------------------------------------------------------------------
+---
 
 ## 5. Project Structure
 
-``` text
+```text
 sahayak/
 │
 ├── public/
@@ -247,36 +249,40 @@ sahayak/
 
 ### Important files
 
-  -------------------------------------------------------------------------
-  File                                  Responsibility
-  ------------------------------------- -----------------------------------
-  `src/App.jsx`                         Frontend page navigation and shared
-                                        application state
+---
 
-  `src/pages/Assessment.jsx`            User intake, questions, voice
-                                        input, backend request
+File Responsibility
 
-  `src/pages/Profile.jsx`               Profile confirmation
+---
 
-  `src/pages/Results.jsx`               Potential scheme matches and
-                                        document overview
+`src/App.jsx` Frontend page navigation and shared
+application state
 
-  `src/pages/SchemeDetails.jsx`         Detailed scheme information and
-                                        official source
+`src/pages/Assessment.jsx` User intake, questions, voice
+input, backend request
 
-  `src/pages/Documents.jsx`             Document checklist and PDF
-                                        generation
+`src/pages/Profile.jsx` Profile confirmation
 
-  `sahayak-backend/server.js`           Express server and API endpoints
+`src/pages/Results.jsx` Potential scheme matches and
+document overview
 
-  `sahayak-backend/utils/gemini.js`     Gemini profile extraction
+`src/pages/SchemeDetails.jsx` Detailed scheme information and
+official source
 
-  `sahayak-backend/utils/matcher.js`    Scheme matching logic
+`src/pages/Documents.jsx` Document checklist and PDF
+generation
 
-  `sahayak-backend/data/schemes.json`   Scheme dataset
-  -------------------------------------------------------------------------
+`sahayak-backend/server.js` Express server and API endpoints
 
-------------------------------------------------------------------------
+`sahayak-backend/utils/gemini.js` Gemini profile extraction
+
+`sahayak-backend/utils/matcher.js` Scheme matching logic
+
+`sahayak-backend/data/schemes.json` Scheme dataset
+
+---
+
+---
 
 ## 6. Installation & Setup
 
@@ -284,16 +290,16 @@ sahayak/
 
 Install:
 
--   Node.js
--   npm
--   Git
+- Node.js
+- npm
+- Git
 
 A modern Chromium-based browser is recommended for browser voice
 features.
 
 ### Clone the repository
 
-``` bash
+```bash
 git clone https://github.com/karthi-21-glh/sahayak.git
 cd sahayak
 ```
@@ -302,13 +308,13 @@ cd sahayak
 
 From the project root:
 
-``` bash
+```bash
 npm install
 ```
 
 ### Backend setup
 
-``` bash
+```bash
 cd sahayak-backend
 npm install
 ```
@@ -317,13 +323,13 @@ npm install
 
 Create:
 
-``` text
+```text
 sahayak-backend/.env
 ```
 
 Add your Gemini API key:
 
-``` env
+```env
 GEMINI_API_KEY=your_gemini_api_key_here
 # Optional; defaults to the model supported by the current Gemini account.
 GEMINI_MODEL=gemini-3.5-flash-lite
@@ -344,19 +350,19 @@ dependency folders.
 
 From:
 
-``` text
+```text
 sahayak/sahayak-backend
 ```
 
 run:
 
-``` bash
+```bash
 node server.js
 ```
 
 The backend runs on:
 
-``` text
+```text
 http://localhost:3000
 ```
 
@@ -369,13 +375,13 @@ accordingly.
 
 Open another terminal and from the project root run:
 
-``` bash
+```bash
 npm run dev
 ```
 
 Vite will display the local frontend URL, normally similar to:
 
-``` text
+```text
 http://localhost:5173
 ```
 
@@ -383,7 +389,7 @@ http://localhost:5173
 
 When running locally:
 
-``` text
+```text
 Browser
    ↓
 Vite frontend :5173
@@ -393,7 +399,7 @@ Express backend :3000
 Gemini API + scheme dataset
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 7. Usage
 
@@ -406,25 +412,25 @@ Gemini API + scheme dataset
 7.  Select **Find Potential Benefits**.
 8.  Review potential scheme matches.
 9.  Open a scheme to see:
-    -   Why it may match
-    -   Matched information
-    -   Document requirements
-    -   Official source
-    -   Next steps
+    - Why it may match
+    - Matched information
+    - Document requirements
+    - Official source
+    - Next steps
 10. Open the document checklist.
 11. Generate the application summary PDF if required.
 12. Use **Read Aloud** to hear result information.
 
 ### Example input
 
-``` text
+```text
 I'm a 22-year-old student from Tamil Nadu. I have one child who is
 studying and my monthly income is 8000 rupees.
 ```
 
 The system can extract information such as:
 
-``` json
+```json
 {
   "age": 22,
   "location": "Tamil Nadu",
@@ -435,31 +441,31 @@ The system can extract information such as:
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 8. Screenshots / Demo
 
 The application includes the following major screens:
 
--   Landing page
--   Assessment / intake
--   Profile summary
--   Potential benefit matches
--   Scheme details
--   Document checklist
--   Generated application summary
+- Landing page
+- Assessment / intake
+- Profile summary
+- Potential benefit matches
+- Scheme details
+- Document checklist
+- Generated application summary
 
 ### Recommended screenshots for the repository
 
 Add screenshots under:
 
-``` text
+```text
 docs/screenshots/
 ```
 
 For example:
 
-``` text
+```text
 docs/screenshots/
 ├── landing.png
 ├── assessment.png
@@ -471,16 +477,19 @@ docs/screenshots/
 
 Then embed them in this README using:
 
-``` markdown
+```markdown
 ![Sahayak Results](docs/screenshots/results.png)
 ```
 
 ### Demo
 
-A deployed live demo is not currently documented in this repository. The
-current setup is intended to run locally.
+🌐 **[Open Sahayak Live Demo](https://sahayak-vjgk.onrender.com)**
 
-------------------------------------------------------------------------
+The deployed application demonstrates the complete Sahayak workflow from
+natural-language intake to potential scheme matching, scheme details,
+document guidance, voice interaction, and application-summary generation.
+
+---
 
 ## 9. API Documentation
 
@@ -490,19 +499,19 @@ Health-check endpoint.
 
 **URL**
 
-``` text
+```text
 GET http://localhost:3000/
 ```
 
 **Example response**
 
-``` json
+```json
 {
   "message": "Sahayak backend is running!"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ### `POST /api/intake`
 
@@ -511,13 +520,13 @@ matches it against the scheme dataset.
 
 **URL**
 
-``` text
+```text
 POST http://localhost:3000/api/intake
 ```
 
 **Request body**
 
-``` json
+```json
 {
   "message": "I am a 55 year old woman from Kerala. I earn 8000 rupees per month and I have two children who are studying."
 }
@@ -525,7 +534,7 @@ POST http://localhost:3000/api/intake
 
 **Example response structure**
 
-``` json
+```json
 {
   "profile": {
     "age": 55,
@@ -557,7 +566,7 @@ POST http://localhost:3000/api/intake
 The exact fields in individual match objects depend on the scheme
 dataset and matcher implementation.
 
-------------------------------------------------------------------------
+---
 
 ### `POST /api/match`
 
@@ -565,7 +574,7 @@ Matches an already structured profile against the scheme dataset.
 
 **URL**
 
-``` text
+```text
 POST http://localhost:3000/api/match
 ```
 
@@ -575,7 +584,7 @@ The body should contain the structured profile expected by the matcher.
 
 Example:
 
-``` json
+```json
 {
   "age": 22,
   "location": "Tamil Nadu",
@@ -588,7 +597,7 @@ Example:
 
 **Response**
 
-``` json
+```json
 {
   "profile": {},
   "matches": [],
@@ -599,7 +608,7 @@ Example:
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 10. Engineering Decisions
 
@@ -637,9 +646,9 @@ information and continue with the relevant government process.
 
 The application deliberately uses language such as:
 
--   "Potential match"
--   "Why it may match"
--   "Information that may match"
+- "Potential match"
+- "Why it may match"
+- "Information that may match"
 
 rather than claiming that the user is definitively eligible.
 
@@ -651,7 +660,7 @@ API credentials are stored in `.env` locally and excluded from version
 control. The repository does not require the user to publish their
 Gemini API key.
 
-------------------------------------------------------------------------
+---
 
 ## 11. Testing
 
@@ -684,44 +693,44 @@ to a hard-coded demonstration profile.
 No automated unit/integration test suite is currently included in the
 prototype.
 
-------------------------------------------------------------------------
+---
 
 ## 12. Limitations & Future Improvements
 
 ### Current limitations
 
--   The application currently depends on a curated scheme dataset.
--   Gemini API availability/quota can affect AI-based extraction.
--   The local fallback only supports a limited set of patterns and
-    fields.
--   Browser voice support depends on the browser and device.
--   The current prototype does not perform final government eligibility
-    verification.
--   Scheme information must be maintained as government rules and
-    requirements change.
--   The document system identifies scheme requirements but does not
-    independently verify that a user possesses each document.
--   The current application is primarily designed as a hackathon
-    prototype rather than a production government service.
+- The application currently depends on a curated scheme dataset.
+- Gemini API availability/quota can affect AI-based extraction.
+- The local fallback only supports a limited set of patterns and
+  fields.
+- Browser voice support depends on the browser and device.
+- The current prototype does not perform final government eligibility
+  verification.
+- Scheme information must be maintained as government rules and
+  requirements change.
+- The document system identifies scheme requirements but does not
+  independently verify that a user possesses each document.
+- The current application is primarily designed as a hackathon
+  prototype rather than a production government service.
 
 ### Future improvements
 
--   Add a larger verified scheme catalogue.
--   Connect to authoritative government scheme APIs/data sources where
-    available.
--   Add Malayalam and additional Indian languages.
--   Improve multilingual speech recognition and speech synthesis.
--   Add stronger validation and confidence handling for extracted
-    profile fields.
--   Add a database for versioned scheme data.
--   Add automated unit and API tests.
--   Add authentication where appropriate for persistent user workflows.
--   Deploy the frontend and backend to production infrastructure.
--   Add accessibility improvements and broader device/browser testing.
--   Add scheme-data update and verification workflows.
--   Improve document verification and application assistance.
+- Add a larger verified scheme catalogue.
+- Connect to authoritative government scheme APIs/data sources where
+  available.
+- Add Malayalam and additional Indian languages.
+- Improve multilingual speech recognition and speech synthesis.
+- Add stronger validation and confidence handling for extracted
+  profile fields.
+- Add a database for versioned scheme data.
+- Add automated unit and API tests.
+- Add authentication where appropriate for persistent user workflows.
+- Improve production deployment reliability and monitoring.
+- Add accessibility improvements and broader device/browser testing.
+- Add scheme-data update and verification workflows.
+- Improve document verification and application assistance.
 
-------------------------------------------------------------------------
+---
 
 ## Project Status
 
@@ -732,7 +741,7 @@ user input to profile extraction, potential scheme matching, scheme
 details, document guidance, voice interaction, and application-summary
 generation.
 
-------------------------------------------------------------------------
+---
 
 ## Repository
 
@@ -740,7 +749,7 @@ GitHub:
 
 https://github.com/karthi-21-glh/sahayak
 
-------------------------------------------------------------------------
+---
 
 ## Disclaimer
 
