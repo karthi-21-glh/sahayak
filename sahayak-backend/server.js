@@ -212,8 +212,8 @@ app.post("/api/intake", async (req, res) => {
   }
 });
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Sahayak backend running on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Sahayak backend running on port ${PORT}`);
 });
