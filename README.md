@@ -452,14 +452,22 @@ document guidance, voice interaction, and application-summary generation.
 
 ## 9. API Documentation
 
+Sahayak exposes REST API endpoints through the Express backend.
+
 ### `GET /`
 
-Health-check endpoint.
+Health-check endpoint used to verify that the backend is running.
 
-**URL**
+**Local URL**
 
 ```text
 GET http://localhost:3000/
+```
+
+**Deployed URL**
+
+```text
+GET https://sahayak-backend-aa0g.onrender.com/
 ```
 
 **Example response**
@@ -474,13 +482,19 @@ GET http://localhost:3000/
 
 ### `POST /api/intake`
 
-Processes a natural-language user description, extracts a profile, and
-matches it against the scheme dataset.
+Processes a natural-language user description, extracts a structured profile,
+and matches it against the scheme dataset.
 
-**URL**
+**Local URL**
 
 ```text
 POST http://localhost:3000/api/intake
+```
+
+**Deployed URL**
+
+```text
+POST https://sahayak-backend-aa0g.onrender.com/api/intake
 ```
 
 **Request body**
@@ -522,8 +536,8 @@ POST http://localhost:3000/api/intake
 }
 ```
 
-The exact fields in individual match objects depend on the scheme
-dataset and matcher implementation.
+The exact fields in individual match objects depend on the scheme dataset and
+matcher implementation.
 
 ---
 
@@ -531,17 +545,23 @@ dataset and matcher implementation.
 
 Matches an already structured profile against the scheme dataset.
 
-**URL**
+**Local URL**
 
 ```text
 POST http://localhost:3000/api/match
+```
+
+**Deployed URL**
+
+```text
+POST https://sahayak-backend-aa0g.onrender.com/api/match
 ```
 
 **Request body**
 
 The body should contain the structured profile expected by the matcher.
 
-Example:
+**Example**
 
 ```json
 {
@@ -554,7 +574,7 @@ Example:
 }
 ```
 
-**Response**
+**Example response**
 
 ```json
 {
@@ -639,7 +659,6 @@ The main application flow has been manually tested through:
 10. English/Hindi UI switching
 11. Read-aloud functionality
 12. Application summary PDF generation
-13. GitHub repository upload
 
 ### Example fallback test
 
@@ -693,20 +712,27 @@ prototype.
 
 ## Project Status
 
-**Hackathon prototype --- functional end-to-end demo**
+**Hackathon prototype — functional end-to-end demo**
 
 Sahayak currently demonstrates the core journey from natural-language
 user input to profile extraction, potential scheme matching, scheme
 details, document guidance, voice interaction, and application-summary
 generation.
 
+### Deployment
+
+- **Frontend:** Deployed on Render
+- **Backend:** Deployed on Render
+- **AI processing:** Gemini API
+- **Live Demo:** https://sahayak-vjgk.onrender.com
+
 ---
 
 ## Repository
 
-GitHub:
+📦 **[GitHub Repository](https://github.com/karthi-21-glh/sahayak)**
 
-https://github.com/karthi-21-glh/sahayak
+🌐 **[Live Demo](https://sahayak-vjgk.onrender.com)**
 
 ---
 
