@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Landing from "./pages/Landing";
 import Assessment from "./pages/Assessment";
@@ -9,12 +9,28 @@ import Documents from "./pages/Documents";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("landing");
-  const [userProfile, setUserProfile] = useState(null);
-  const [backendMatches, setBackendMatches] = useState([]);
+  const [userProfile, setUserProfile] = useState(() => {
+    const saved = localStorage.getItem("sahayak-profile");
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [backendMatches, setBackendMatches] = useState(() => {
+    const saved = localStorage.getItem("sahayak-matches");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [selectedScheme, setSelectedScheme] = useState(null);
 
   // Global language state
   const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    if (userProfile) {
+      localStorage.setItem("sahayak-profile", JSON.stringify(userProfile));
+    }
+  }, [userProfile]);
+
+  useEffect(() => {
+    localStorage.setItem("sahayak-matches", JSON.stringify(backendMatches));
+  }, [backendMatches]);
 
   const navigate = (page) => {
     setCurrentPage(page);
@@ -59,7 +75,14 @@ function App() {
               setSelectedScheme(scheme);
               navigate("scheme");
             }}
-            onDocuments={() => navigate("documents")}
+            onDocuments={(scheme) => {
+              if (scheme) {
+                setSelectedScheme(scheme);
+              } else {
+                setSelectedScheme(null);
+              }
+              navigate("documents");
+            }}
             onBack={() => navigate("profile")}
             language={language}
             setLanguage={setLanguage}
@@ -71,7 +94,10 @@ function App() {
           <SchemeDetails
             scheme={selectedScheme}
             onBack={() => navigate("results")}
-            onDocuments={() => navigate("documents")}
+            onDocuments={() => {
+              setSelectedScheme(null);
+              navigate("documents");
+            }}
             language={language}
             setLanguage={setLanguage}
           />
@@ -80,7 +106,8 @@ function App() {
       case "documents":
         return (
           <Documents
-            scheme={selectedScheme}
+            scheme={null}
+            matches={backendMatches}
             profile={userProfile}
             onBack={() => navigate("results")}
             language={language}

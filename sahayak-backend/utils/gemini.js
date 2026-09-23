@@ -5,6 +5,13 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
+const configuredModel = process.env.GEMINI_MODEL;
+const models = [
+    configuredModel || "gemini-3.5-flash-lite",
+    "gemini-flash-lite-latest",
+].filter((value, index, list) => list.indexOf(value) === index);
+const transientStatuses = new Set([429, 500, 503, 504]);
+
 async function extractProfile(message) {
 
     const prompt = `
@@ -53,15 +60,36 @@ User message:
 ${message}
 `;
 
-    const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
-        contents: prompt,
-        config: {
-            responseMimeType: "application/json"
-        }
-    });
+    let lastError;
 
-    return JSON.parse(response.text);
+    for (const model of models) {
+        for (let attempt = 0; attempt < 2; attempt += 1) {
+            try {
+                const response = await ai.models.generateContent({
+                    model,
+                    contents: prompt,
+                    config: {
+                        responseMimeType: "application/json"
+                    }
+                });
+
+                return JSON.parse(response.text);
+            } catch (error) {
+                lastError = error;
+                const status = error?.status || error?.error?.code;
+
+                if (!transientStatuses.has(Number(status))) {
+                    break;
+                }
+
+                await new Promise((resolve) => {
+                    setTimeout(resolve, 500 * 2 ** attempt);
+                });
+            }
+        }
+    }
+
+    throw lastError;
 }
 
 module.exports = {

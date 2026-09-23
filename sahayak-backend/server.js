@@ -22,6 +22,12 @@ app.post("/api/match", async (req, res) => {
   try {
     const profile = req.body;
 
+    if (!profile || typeof profile !== "object" || Array.isArray(profile)) {
+      return res.status(400).json({
+        error: "A profile object is required",
+      });
+    }
+
     const matches = matchAllSchemes(profile, schemes);
 
     res.json({
@@ -152,9 +158,9 @@ function extractProfileFallback(message) {
 // AI profile extraction
 app.post("/api/intake", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, answers = {} } = req.body;
 
-    if (!message) {
+    if (typeof message !== "string" || !message.trim()) {
       return res.status(400).json({
         error: "Message is required",
       });
@@ -167,11 +173,23 @@ app.post("/api/intake", async (req, res) => {
     try {
       profile = await extractProfile(message);
     } catch (error) {
-      console.error("Gemini unavailable. Using local fallback extraction.");
+      console.error(
+        "Gemini profile extraction failed. Using local fallback extraction.",
+        error instanceof Error ? error.message : error,
+      );
 
       profile = extractProfileFallback(message);
       usedFallback = true;
     }
+
+    if (answers.childrenStudying === "Yes") {
+      profile.children_are_students = true;
+    } else if (answers.childrenStudying === "No") {
+      profile.children_are_students = false;
+    }
+
+    profile.receives_pension = answers.receivesPension || null;
+    profile.has_income_certificate = answers.hasIncomeCertificate || null;
 
     // Match profile against all schemes
     const matches = matchAllSchemes(profile, schemes);
@@ -194,7 +212,7 @@ app.post("/api/intake", async (req, res) => {
   }
 });
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.listen(PORT, () => {
   console.log(`Sahayak backend running on http://localhost:${PORT}`);

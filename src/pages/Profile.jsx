@@ -1,13 +1,13 @@
 function Profile({ profile, onContinue, onBack, language, setLanguage }) {
   const data = profile || {
-    age: 55,
-    location: "Kerala",
-    maritalStatus: "Widowed",
-    monthlyIncome: "₹8,000",
-    children: 2,
-    childrenStudying: "Yes",
-    receivesPension: "No",
-    hasIncomeCertificate: "No",
+    age: null,
+    location: "Not available",
+    maritalStatus: "Not available",
+    monthlyIncome: "Not available",
+    children: null,
+    childrenStudying: "Not available",
+    receivesPension: "Not available",
+    hasIncomeCertificate: "Not available",
   };
 
   const isHindi = language === "hi";

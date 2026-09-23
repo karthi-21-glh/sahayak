@@ -152,20 +152,16 @@ function SchemeDetails({ scheme, onBack, onDocuments, language, setLanguage }) {
   };
 
   const data = scheme || {
-    name: isHindi
-      ? "उदाहरण विधवा सहायता योजना"
-      : "Example Widow Support Scheme",
-    category: isHindi ? text.socialWelfare : "Social Welfare",
-    status: isHindi ? text.strongMatch : "Strong potential match",
-    statusType: "strong",
+    name: isHindi ? "योजना उपलब्ध नहीं है" : "Scheme unavailable",
+    category: "",
+    status: isHindi ? "जानकारी उपलब्ध नहीं है" : "Information unavailable",
+    statusType: "potential",
     reason: isHindi
-      ? text.demoWidowReason
-      : "Your profile indicates that you are widowed, which may match the configured conditions in this demo scheme dataset.",
-    matchedConditions: isHindi
-      ? [text.widowed, text.keralaResident, text.incomeInformation]
-      : ["Widowed", "Kerala resident", "Income information provided"],
-    documentsReady: ["Aadhaar Card", "Bank Account"],
-    documentsMissing: ["Income Certificate", "Widow/Widower Certificate"],
+      ? "योजना का विवरण उपलब्ध नहीं है।"
+      : "Scheme details are not available.",
+    matchedConditions: [],
+    documentsReady: [],
+    documentsMissing: [],
     officialUrl: "",
   };
 

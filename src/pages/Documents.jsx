@@ -1,7 +1,23 @@
 import { jsPDF } from "jspdf";
 
-function Documents({ onBack, scheme, profile, language, setLanguage }) {
+function Documents({
+  onBack,
+  scheme,
+  matches = [],
+  profile,
+  language,
+  setLanguage,
+}) {
   const isHindi = language === "hi";
+  const storedMatches = (() => {
+    try {
+      const saved = localStorage.getItem("sahayak-matches");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  })();
+  const availableMatches = matches.length > 0 ? matches : storedMatches;
 
   const text = {
     en: {
@@ -11,6 +27,7 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
       intro:
         "Here's a simple checklist of documents that may be relevant to the potential benefits Sahayak found for you.",
       ready: "ready",
+      needed: "needed",
       basedAssessment: "Based on the current assessment",
       documentsReady: "documents ready",
       results: "Results",
@@ -64,6 +81,7 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
       intro:
         "यह उन दस्तावेज़ों की सरल चेकलिस्ट है जो Sahayak द्वारा पाए गए संभावित लाभों के लिए प्रासंगिक हो सकते हैं।",
       ready: "तैयार",
+      needed: "आवश्यक",
       basedAssessment: "वर्तमान मूल्यांकन के आधार पर",
       documentsReady: "दस्तावेज़ तैयार",
       results: "परिणाम",
@@ -113,19 +131,29 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
     documentReadiness: "Document Readiness",
   };
 
-  /*
-   * Use the selected scheme's document information.
-   * If no scheme is available, use the old demo profile.
-   */
-  const demoScheme = {
-    documentsReady: ["Aadhaar Card"],
-    documentsMissing: ["Income Certificate", "School Certificate"],
+  const aggregateMissingDocuments = [
+    ...new Set(
+      availableMatches.flatMap(
+        (match) =>
+          match.missing_documents ||
+          match.documentsMissing ||
+          match.documents ||
+          [],
+      ),
+    ),
+  ];
+
+  const activeScheme = scheme || {
+    name: "",
+    documentsReady: [],
+    documentsMissing: aggregateMissingDocuments,
   };
 
-  const activeScheme = scheme || demoScheme;
-
   const readyNames = activeScheme.documentsReady || [];
-  const missingNames = activeScheme.documentsMissing || [];
+  const missingNames =
+    activeScheme.documentsMissing?.length > 0
+      ? activeScheme.documentsMissing
+      : activeScheme.documents || [];
 
   const translateDocument = (name) => {
     if (!isHindi) return name;
@@ -221,6 +249,7 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
     const addText = (text, size = 11, bold = false) => {
       doc.setFont("helvetica", bold ? "bold" : "normal");
       doc.setFontSize(size);
+      doc.setTextColor(40, 40, 40);
 
       const lines = doc.splitTextToSize(String(text), contentWidth);
 
@@ -236,6 +265,55 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
     const addSection = (title) => {
       y += 5;
       addText(title, 14, true);
+    };
+
+    const formatMonthlyIncome = (value) => {
+      if (value === null || value === undefined || value === "") {
+        return isHindi ? "निर्दिष्ट नहीं" : "Not specified";
+      }
+
+      return String(value)
+        .replace("₹", "")
+        .trim()
+        .replace(/^INR\s*/i, "");
+    };
+
+    const addDocumentStatus = (status, document) => {
+      const markerWidth = 7;
+      const documentLines = doc.splitTextToSize(
+        String(document),
+        contentWidth - markerWidth,
+      );
+
+      if (y + documentLines.length * 7 > 275) {
+        doc.addPage();
+        y = 20;
+      }
+
+      const markerX = margin + 2;
+      const markerY = y - 2;
+
+      if (status === "ready") {
+        doc.setDrawColor(0, 153, 102);
+        doc.setLineWidth(0.7);
+        doc.line(markerX - 1, markerY, markerX, markerY + 1.5);
+        doc.line(markerX, markerY + 1.5, markerX + 2.8, markerY - 2.5);
+      } else {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor(230, 140, 0);
+        doc.text("!", markerX, y);
+      }
+
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(40, 40, 40);
+      doc.text(documentLines[0], margin + markerWidth, y);
+
+      if (documentLines.length > 1) {
+        doc.text(documentLines.slice(1), margin, y + 7);
+      }
+
+      y += documentLines.length * 7 + 3;
     };
 
     // Title
@@ -271,10 +349,7 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
       );
 
       addText(
-        `${isHindi ? "मासिक आय" : "Monthly Income"}: ${
-          profile.monthlyIncome ||
-          (isHindi ? "निर्दिष्ट नहीं" : "Not specified")
-        }`,
+        `${isHindi ? "मासिक आय (INR प्रति माह)" : "Monthly Income (INR per month)"}: ${formatMonthlyIncome(profile.monthlyIncome)}`,
       );
 
       addText(
@@ -289,11 +364,45 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
           (isHindi ? "निर्दिष्ट नहीं" : "Not specified")
         }`,
       );
+
+      addText(
+        `${isHindi ? "सरकारी पेंशन" : "Government Pension"}: ${
+          profile.receivesPension ||
+          (isHindi ? "निर्दिष्ट नहीं" : "Not specified")
+        }`,
+      );
+
+      addText(
+        `${isHindi ? "आय प्रमाण पत्र" : "Income Certificate"}: ${
+          profile.hasIncomeCertificate ||
+          (isHindi ? "निर्दिष्ट नहीं" : "Not specified")
+        }`,
+      );
     }
 
     // Scheme
     if (scheme) {
       addSection(isHindi ? "संभावित लाभ मिलान" : "Potential Benefit Match");
+
+      const missingInformationLabels = {
+        is_student: "student status",
+        has_disability: "disability status",
+        disability_percentage: "disability percentage",
+        monthly_income: "monthly income",
+        marital_status: "marital status",
+        children_count: "number of children",
+        children_are_students: "whether children are studying",
+        landholding_farmer: "landholding farmer status",
+        poor_household: "household economic status",
+        has_pucca_house: "housing status",
+      };
+      const fallbackReason = scheme.missingInformation?.length
+        ? `More information is needed about ${scheme.missingInformation
+            .map(
+              (field) => missingInformationLabels[field] || field,
+            )
+            .join(", ")}.`
+        : "Potential match based on the information provided.";
 
       addText(
         scheme.name || (isHindi ? "संभावित योजना" : "Potential Scheme"),
@@ -309,9 +418,17 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
         }`,
       );
 
+      if (scheme.matchScore !== undefined) {
+        addText(
+          `${isHindi ? "मिलान स्कोर" : "Match Score"}: ${
+            scheme.matchScore
+          }/100`,
+        );
+      }
+
       addText(
         `${isHindi ? "क्यों मेल खा सकती है" : "Why it may match"}: ${
-          scheme.reason || "—"
+          scheme.reason || fallbackReason
         }`,
       );
 
@@ -324,6 +441,65 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
           addText(`• ${condition}`);
         });
       }
+
+      if (scheme.missingInformation?.length) {
+        addText(
+          `${isHindi ? "अधिक जानकारी आवश्यक" : "Information Needed"}:`,
+        );
+
+        scheme.missingInformation.forEach((field) => {
+          addText(`• ${field.replaceAll("_", " ")}`);
+        });
+      }
+
+      if (scheme.benefit) {
+        addText(
+          `${isHindi ? "लाभ" : "Benefit"}: ${scheme.benefit}`,
+        );
+      }
+
+      if (scheme.howToApply) {
+        addText(
+          `${isHindi ? "आवेदन कैसे करें" : "How to Apply"}: ${
+            scheme.howToApply
+          }`,
+        );
+      }
+
+      if (scheme.officialUrl) {
+        addText(
+          `${isHindi ? "आधिकारिक स्रोत" : "Official Source"}: ${
+            scheme.officialUrl
+          }`,
+        );
+      }
+    }
+
+    if (!scheme && matches.length) {
+      addSection(isHindi ? "संभावित लाभ मिलान" : "Potential Benefit Matches");
+
+      matches.forEach((match, index) => {
+        addText(
+          `${index + 1}. ${match.name || (isHindi ? "संभावित योजना" : "Potential Scheme")}`,
+          12,
+          true,
+        );
+        addText(
+          `${isHindi ? "श्रेणी" : "Category"}: ${
+            match.category || (isHindi ? "सरकारी लाभ" : "Government Benefit")
+          }`,
+        );
+        addText(
+          `${isHindi ? "स्थिति" : "Status"}: ${
+            match.match_level || "Potential match"
+          }`,
+        );
+        addText(
+          `${isHindi ? "मिलान स्कोर" : "Match Score"}: ${
+            match.match_score ?? "—"
+          }/100`,
+        );
+      });
     }
 
     // Documents
@@ -336,7 +512,7 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
     );
 
     readyNames.forEach((document) => {
-      addText(`[READY] ${document}`);
+      addDocumentStatus("ready", document);
     });
 
     addText(
@@ -346,7 +522,7 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
     );
 
     missingNames.forEach((document) => {
-      addText(`[NEEDED] ${document}`);
+      addDocumentStatus("missing", document);
     });
 
     // Disclaimer
@@ -358,7 +534,7 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
         : "A potential match does not guarantee eligibility or approval. Final decisions are made by the relevant government authority.",
     );
 
-    doc.save("sahayak-application-summary.pdf");
+    doc.save("sahayak-application-summary-1.pdf");
   };
 
   return (
@@ -513,7 +689,7 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
 
           {/* MISSING */}
           <section className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 font-bold text-amber-600">
                 !
               </div>
@@ -523,6 +699,10 @@ function Documents({ onBack, scheme, profile, language, setLanguage }) {
 
                 <p className="text-xs text-slate-500">{text.checkObtain}</p>
               </div>
+
+              <span className="shrink-0 rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">
+                {missingDocuments.length} {text.needed}
+              </span>
             </div>
 
             <div className="mt-5 space-y-3">

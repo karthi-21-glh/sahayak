@@ -325,9 +325,17 @@ Add your Gemini API key:
 
 ``` env
 GEMINI_API_KEY=your_gemini_api_key_here
+# Optional; defaults to the model supported by the current Gemini account.
+GEMINI_MODEL=gemini-3.5-flash-lite
+# Optional; defaults to 3000.
+PORT=3000
 ```
 
 **Never commit `.env` or expose the API key publicly.**
+
+The backend retries temporary Gemini rate-limit and availability errors before
+using its local extraction fallback. A fallback response includes
+`"used_fallback": true`.
 
 The repository's `.gitignore` excludes the backend `.env` file and
 dependency folders.
@@ -351,6 +359,11 @@ The backend runs on:
 ``` text
 http://localhost:3000
 ```
+
+If the frontend or backend is running on another host or port, set
+`VITE_API_BASE_URL` in the frontend environment (for example,
+`VITE_API_BASE_URL=http://localhost:4000`) and set the backend `PORT`
+accordingly.
 
 ### Start the frontend
 

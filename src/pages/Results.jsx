@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 function Results({
   profile,
@@ -10,14 +10,11 @@ function Results({
   setLanguage,
 }) {
   const data = profile || {
-    age: 55,
-    location: "Kerala",
-    maritalStatus: "Widowed",
-    monthlyIncome: "₹8,000",
-    children: 2,
-    childrenStudying: "Yes",
-    receivesPension: "No",
-    hasIncomeCertificate: "No",
+    age: "—",
+    location: "Not available",
+    maritalStatus: "Not available",
+    monthlyIncome: "Not available",
+    children: "—",
   };
 
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -127,10 +124,10 @@ function Results({
 
       potentialMatch: "Potential Matches",
       basedOnProfile: "Based on your profile",
-      documentsReady: "Documents Identified",
-      currentReadiness: "Identified from scheme requirements",
-      documentsNeeded: "Missing Documents",
-      mayBeRequired: "Specifically marked as missing",
+      documentsReady: "Documents Ready",
+      currentReadiness: "No documents confirmed yet",
+      documentsNeeded: "Documents Needed",
+      mayBeRequired: "Required by the selected schemes",
 
       matches: "Potential matches",
       reviewMatches: "Review why each result may match your situation.",
@@ -204,10 +201,10 @@ function Results({
 
       potentialMatch: "संभावित मिलान",
       basedOnProfile: "आपकी प्रोफ़ाइल के आधार पर",
-      documentsReady: "पहचाने गए दस्तावेज़",
-      currentReadiness: "योजना की आवश्यकताओं से पहचाने गए",
-      documentsNeeded: "अनुपलब्ध दस्तावेज़",
-      mayBeRequired: "जिन्हें विशेष रूप से अनुपलब्ध बताया गया है",
+      documentsReady: "तैयार दस्तावेज़",
+      currentReadiness: "अभी किसी दस्तावेज़ की पुष्टि नहीं हुई",
+      documentsNeeded: "आवश्यक दस्तावेज़",
+      mayBeRequired: "चयनित योजनाओं के लिए आवश्यक",
 
       matches: "संभावित मिलान",
       reviewMatches:
@@ -265,8 +262,7 @@ function Results({
 
   const text = t[language] || t.en;
 
-  const schemes = useMemo(() => {
-    return backendMatches.map((match) => ({
+  const schemes = backendMatches.map((match) => ({
       id: match.scheme_id,
       name: match.name,
 
@@ -288,17 +284,15 @@ function Results({
 
       documents: match.documents || [],
 
-      documentsReady: match.documents || [],
-
-      documentsMissing: match.missing_documents || [],
+      documentsReady: match.documents_ready || [],
+      documentsMissing: match.missing_documents || match.documents || [],
 
       benefit: match.benefit || "",
 
       howToApply: match.how_to_apply || "",
 
       officialUrl: match.official_url || "",
-    }));
-  }, [backendMatches]);
+  }));
 
   const documentsReady = [
     ...new Set(schemes.flatMap((scheme) => scheme.documentsReady)),
@@ -514,7 +508,7 @@ function Results({
               totalMissing={totalMissing}
               documentsReady={documentsReady}
               documentsMissing={documentsMissing}
-              onDocuments={onDocuments}
+              onDocuments={() => onDocuments()}
               text={text}
             />
 

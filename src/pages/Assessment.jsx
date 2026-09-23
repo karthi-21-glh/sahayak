@@ -1,5 +1,7 @@
 import { useState, useRef } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+
 function Assessment({ onComplete, onBack, language, setLanguage }) {
   const [step, setStep] = useState(1);
   const [story, setStory] = useState("");
@@ -171,13 +173,14 @@ function Assessment({ onComplete, onBack, language, setLanguage }) {
       const description = story.trim();
 
       try {
-        const response = await fetch("http://localhost:3000/api/intake", {
+        const response = await fetch(`${API_BASE_URL}/api/intake`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             message: description,
+            answers,
           }),
         });
 
@@ -197,7 +200,9 @@ function Assessment({ onComplete, onBack, language, setLanguage }) {
         const monthlyIncome =
           backendProfile.monthly_income !== null &&
           backendProfile.monthly_income !== undefined
-            ? `₹${backendProfile.monthly_income}`
+            ? `₹${new Intl.NumberFormat("en-IN").format(
+                backendProfile.monthly_income,
+              )}`
             : "Not specified";
 
         onComplete(
